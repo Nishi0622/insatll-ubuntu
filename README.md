@@ -23,6 +23,16 @@ sudo bash install-ubuntu.sh
 - `systemd` サービス作成
 - nnn の起動
 
+## 管理画面から更新を有効化する
+
+あとから有効化する場合は、Konomi 本体側で次を実行します。
+
+```bash
+cd /opt/konomi/app
+sudo bash scripts/setup-admin-update.sh
+sudo systemctl restart konomi
+```
+
 ## 注意
 
 - GitHub の Deploy Key は `Allow write access` をオフにしてください。
