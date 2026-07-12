@@ -11,6 +11,8 @@ curl -fsSL https://raw.githubusercontent.com/Nishi0622/insatll-ubuntu/main/insta
 sudo bash install-ubuntu.sh
 ```
 
+実行前に内容確認が表示されます。続行する場合だけ `yes` と入力してください。
+
 インストーラーは次の処理を行います。
 
 - 必要パッケージのインストール

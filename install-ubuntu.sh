@@ -20,6 +20,35 @@ need_root() {
   fi
 }
 
+confirm_install() {
+  cat <<EOF
+Konomi Ubuntu インストーラーを実行します。
+
+実行内容:
+- apt で必要パッケージをインストール
+- Node.js 22 がない場合は導入
+- ${APP_USER} ユーザーと保存先ディレクトリを作成
+- GitHub Deploy Key を作成して登録待ち
+- ${APP_DIR} に Konomi を clone / 更新
+- konomi.config.json を作成
+- systemd サービスを作成
+- 管理画面からの更新機能を有効化
+- Konomi を起動
+
+保存先:
+- app: ${APP_DIR}
+- data: ${DATA_ROOT}
+- media: ${MEDIA_ROOT}
+
+続行するには yes と入力してください。
+EOF
+  read -r -p "> " answer
+  if [ "$answer" != "yes" ]; then
+    echo "インストールを中止しました。"
+    exit 0
+  fi
+}
+
 as_app_user() {
   sudo -u "$APP_USER" "$@"
 }
@@ -165,6 +194,7 @@ start_service() {
 
 main() {
   need_root
+  confirm_install
   install_packages
   create_user_and_dirs
   setup_deploy_key
