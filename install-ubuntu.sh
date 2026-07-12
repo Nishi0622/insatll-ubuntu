@@ -121,7 +121,8 @@ write_config() {
   "adminPort": ${ADMIN_PORT},
   "dataRoot": "${DATA_ROOT}",
   "mediaRoot": "${MEDIA_ROOT}",
-  "adminDisabled": ${ADMIN_DISABLED}
+  "adminDisabled": ${ADMIN_DISABLED},
+  "updateCommand": "/usr/bin/sudo /bin/systemctl start ${SERVICE_NAME}-update.service"
 }
 EOF
   chown "$APP_USER:$APP_USER" "${APP_DIR}/konomi.config.json"
@@ -154,6 +155,22 @@ ReadWritePaths=${APP_HOME} /var/lib/konomi
 [Install]
 WantedBy=multi-user.target
 EOF
+
+  cat > "/etc/systemd/system/${SERVICE_NAME}-update.service" <<EOF
+[Unit]
+Description=Update Konomi community server
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=${APP_DIR}
+ExecStart=/usr/bin/env bash ${APP_DIR}/scripts/update-ubuntu.sh
+EOF
+
+  cat > "/etc/sudoers.d/${SERVICE_NAME}-update" <<EOF
+${APP_USER} ALL=(root) NOPASSWD: /bin/systemctl start ${SERVICE_NAME}-update.service
+EOF
+  chmod 440 "/etc/sudoers.d/${SERVICE_NAME}-update"
 }
 
 start_service() {

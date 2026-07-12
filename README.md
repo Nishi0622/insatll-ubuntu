@@ -19,6 +19,7 @@ sudo bash install-ubuntu.sh
 - Deploy Key の作成と登録待ち
 - GitHub から Konomi 本体を clone
 - `nnn.config.json` 作成
+- 管理画面からの更新用 `konomi-update.service` 作成
 - `systemd` サービス作成
 - nnn の起動
 
